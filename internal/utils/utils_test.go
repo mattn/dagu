@@ -6,7 +6,7 @@ import (
 	"io"
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -75,7 +75,7 @@ func TestOpenFile(t *testing.T) {
 	tmp, err := os.MkdirTemp("", "open")
 	require.NoError(t, err)
 
-	name := path.Join(tmp, "/file.txt")
+	name := filepath.Join(tmp, "/file.txt")
 	f, err := os.OpenFile(name, os.O_CREATE|os.O_WRONLY, 0644)
 	require.NoError(t, err)
 
@@ -96,7 +96,7 @@ func TestOpenOrCreateFile(t *testing.T) {
 	tmp, err := os.MkdirTemp("", "open_or_create")
 	require.NoError(t, err)
 
-	name := path.Join(tmp, "/file.txt")
+	name := filepath.Join(tmp, "/file.txt")
 	f, err := utils.OpenOrCreateFile(name)
 	require.NoError(t, err)
 
@@ -138,7 +138,7 @@ func TestOpenfile(t *testing.T) {
 	dir := utils.MustTempDir("tempdir")
 	defer os.RemoveAll(dir)
 
-	fn := path.Join(dir, "test.txt")
+	fn := filepath.Join(dir, "test.txt")
 	f, err := utils.OpenOrCreateFile(fn)
 	require.NoError(t, err)
 	defer f.Close()

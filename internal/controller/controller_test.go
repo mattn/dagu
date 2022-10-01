@@ -4,7 +4,7 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"path"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -20,7 +20,7 @@ import (
 )
 
 var (
-	testdataDir = path.Join(utils.MustGetwd(), "./testdata")
+	testdataDir = filepath.Join(utils.MustGetwd(), "./testdata")
 )
 
 func TestMain(m *testing.M) {
@@ -159,7 +159,7 @@ func TestStart(t *testing.T) {
 	require.NoError(t, err)
 
 	dc := controller.NewDAGController(dag.DAG)
-	err = dc.Start(path.Join(utils.MustGetwd(), "../../bin/dagu"), "", "")
+	err = dc.Start(filepath.Join(utils.MustGetwd(), "../../bin/dagu"), "", "")
 	require.Error(t, err)
 
 	status, err := dc.GetLastStatus()
@@ -177,7 +177,7 @@ func TestStop(t *testing.T) {
 	require.NoError(t, err)
 
 	dc := controller.NewDAGController(dag.DAG)
-	dc.StartAsync(path.Join(utils.MustGetwd(), "../../bin/dagu"), "", "")
+	dc.StartAsync(filepath.Join(utils.MustGetwd(), "../../bin/dagu"), "", "")
 
 	require.Eventually(t, func() bool {
 		st, _ := dc.GetStatus()
@@ -202,7 +202,7 @@ func TestRestart(t *testing.T) {
 	require.NoError(t, err)
 
 	dc := controller.NewDAGController(dag.DAG)
-	err = dc.Restart(path.Join(utils.MustGetwd(), "../../bin/dagu"), "")
+	err = dc.Restart(filepath.Join(utils.MustGetwd(), "../../bin/dagu"), "")
 	require.NoError(t, err)
 
 	status, err := dc.GetLastStatus()
@@ -220,7 +220,7 @@ func TestRetry(t *testing.T) {
 	require.NoError(t, err)
 
 	dc := controller.NewDAGController(dag.DAG)
-	err = dc.Start(path.Join(utils.MustGetwd(), "../../bin/dagu"), "", "x y z")
+	err = dc.Start(filepath.Join(utils.MustGetwd(), "../../bin/dagu"), "", "x y z")
 	require.NoError(t, err)
 
 	status, err := dc.GetLastStatus()
@@ -230,7 +230,7 @@ func TestRetry(t *testing.T) {
 	requestId := status.RequestId
 	params := status.Params
 
-	err = dc.Retry(path.Join(utils.MustGetwd(), "../../bin/dagu"), "", requestId)
+	err = dc.Retry(filepath.Join(utils.MustGetwd(), "../../bin/dagu"), "", requestId)
 	require.NoError(t, err)
 	status, err = dc.GetLastStatus()
 	require.NoError(t, err)
@@ -250,7 +250,7 @@ func TestUpdate(t *testing.T) {
 	tmpDir := utils.MustTempDir("controller-test-save")
 	defer os.RemoveAll(tmpDir)
 
-	loc := path.Join(tmpDir, "test.yaml")
+	loc := filepath.Join(tmpDir, "test.yaml")
 	d := &dag.DAG{
 		Name:     "test",
 		Location: loc,
@@ -292,7 +292,7 @@ func TestRemove(t *testing.T) {
 	tmpDir := utils.MustTempDir("controller-test-remove")
 	defer os.RemoveAll(tmpDir)
 
-	loc := path.Join(tmpDir, "test.yaml")
+	loc := filepath.Join(tmpDir, "test.yaml")
 	d := &dag.DAG{
 		Name:     "test",
 		Location: loc,
@@ -329,12 +329,12 @@ func TestCreateNewDAG(t *testing.T) {
 	defer os.RemoveAll(tmpDir)
 
 	// invalid filename
-	filename := path.Join(tmpDir, "test")
+	filename := filepath.Join(tmpDir, "test")
 	err := controller.CreateDAG(filename)
 	require.Error(t, err)
 
 	// valid filename
-	filename = path.Join(tmpDir, "test.yaml")
+	filename = filepath.Join(tmpDir, "test.yaml")
 	err = controller.CreateDAG(filename)
 	require.NoError(t, err)
 
@@ -355,8 +355,8 @@ func TestRenameDAG(t *testing.T) {
 	tmpDir := utils.MustTempDir("controller-test-rename")
 	defer os.RemoveAll(tmpDir)
 
-	oldName := path.Join(tmpDir, "rename_dag.yaml")
-	newName := path.Join(tmpDir, "rename_dag_renamed.yaml")
+	oldName := filepath.Join(tmpDir, "rename_dag.yaml")
+	newName := filepath.Join(tmpDir, "rename_dag_renamed.yaml")
 
 	err := controller.CreateDAG(oldName)
 	require.NoError(t, err)
@@ -370,7 +370,7 @@ func TestRenameDAG(t *testing.T) {
 }
 
 func testDAG(name string) string {
-	return path.Join(testdataDir, name)
+	return filepath.Join(testdataDir, name)
 }
 
 func testNewStatus(d *dag.DAG, reqId string, status scheduler.SchedulerStatus, nodeStatus scheduler.NodeStatus) *models.Status {

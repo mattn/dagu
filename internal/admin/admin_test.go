@@ -2,14 +2,14 @@ package admin
 
 import (
 	"os"
-	"path"
+	"path/filepath"
 	"testing"
 
 	"github.com/yohamta/dagu/internal/settings"
 	"github.com/yohamta/dagu/internal/utils"
 )
 
-var testdataDir = path.Join(utils.MustGetwd(), "testdata")
+var testdataDir = filepath.Join(utils.MustGetwd(), "testdata")
 var testHomeDir string
 
 func TestMain(m *testing.M) {

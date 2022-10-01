@@ -2,7 +2,7 @@ package runner
 
 import (
 	"os"
-	"path"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -14,8 +14,8 @@ import (
 )
 
 var (
-	testdataDir = path.Join(utils.MustGetwd(), "testdata")
-	testBin     = path.Join(utils.MustGetwd(), "../../bin/dagu")
+	testdataDir = filepath.Join(utils.MustGetwd(), "testdata")
+	testBin     = filepath.Join(utils.MustGetwd(), "../../bin/dagu")
 	testConfig  = &admin.Config{Command: testBin}
 	testHomeDir string
 )

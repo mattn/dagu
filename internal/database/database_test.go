@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -57,7 +56,7 @@ func testNewDataFile(t *testing.T, db *Database) {
 	f, err := db.newFile(d.Location, timestamp, requestId)
 	require.NoError(t, err)
 	p := utils.ValidFilename(strings.TrimSuffix(
-		path.Base(d.Location), path.Ext(d.Location)), "_")
+		filepath.Base(d.Location), filepath.Ext(d.Location)), "_")
 	require.Regexp(t, fmt.Sprintf("%s.*/%s.20220101.00:00:00.000.%s.dat", p, p, requestId[:8]), f)
 
 	_, err = db.newFile("", timestamp, requestId)

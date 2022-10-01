@@ -5,7 +5,7 @@ import (
 	"io"
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -25,7 +25,7 @@ type appTest struct {
 }
 
 var (
-	testdataDir = path.Join(utils.MustGetwd(), "testdata")
+	testdataDir = filepath.Join(utils.MustGetwd(), "testdata")
 	testHomeDir = ""
 )
 
@@ -44,7 +44,7 @@ func TestSetVersion(t *testing.T) {
 }
 
 func testConfig(name string) string {
-	return path.Join(testdataDir, name)
+	return filepath.Join(testdataDir, name)
 }
 
 func runAppTestOutput(app *cli.App, test appTest, t *testing.T) {

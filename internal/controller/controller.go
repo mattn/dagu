@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"path"
 	"path/filepath"
 	"strings"
 	"time"
@@ -61,7 +60,7 @@ func GrepDAG(dir string, pattern string) (ret []*GrepResult, errs []string, err 
 				continue
 			}
 			ret = append(ret, &GrepResult{
-				Name:    strings.TrimSuffix(fi.Name(), path.Ext(fi.Name())),
+				Name:    strings.TrimSuffix(fi.Name(), filepath.Ext(fi.Name())),
 				DAG:     dag,
 				Matches: m,
 			})
@@ -280,7 +279,7 @@ func (dc *DAGController) DeleteDAG() error {
 }
 
 func validateLocation(dagLocation string) error {
-	if path.Ext(dagLocation) != ".yaml" {
+	if filepath.Ext(dagLocation) != ".yaml" {
 		return fmt.Errorf("the config file must be a yaml file with .yaml extension")
 	}
 	return nil

@@ -1,7 +1,7 @@
 package runner
 
 import (
-	"path"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -12,7 +12,7 @@ import (
 )
 
 func TestJobStart(t *testing.T) {
-	file := path.Join(testdataDir, "start.yaml")
+	file := filepath.Join(testdataDir, "start.yaml")
 	dr := controller.NewDAGStatusReader()
 	dag, _ := dr.ReadStatus(file, false)
 	c := controller.NewDAGController(dag.DAG)
@@ -43,7 +43,7 @@ func TestJobStart(t *testing.T) {
 }
 
 func TestJobSop(t *testing.T) {
-	file := path.Join(testdataDir, "stop.yaml")
+	file := filepath.Join(testdataDir, "stop.yaml")
 	dr := controller.NewDAGStatusReader()
 	dag, _ := dr.ReadStatus(file, false)
 

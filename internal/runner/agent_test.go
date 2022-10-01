@@ -2,7 +2,7 @@ package runner
 
 import (
 	"os"
-	"path"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -25,7 +25,7 @@ func TestAgent(t *testing.T) {
 		&admin.Config{
 			DAGs:    testdataDir,
 			Command: testBin,
-			LogDir:  path.Join(tmpDir, "log"),
+			LogDir:  filepath.Join(tmpDir, "log"),
 		})
 	utils.FixedTime = now
 
@@ -34,7 +34,7 @@ func TestAgent(t *testing.T) {
 		require.NoError(t, err)
 	}()
 
-	pathToDAG := path.Join(testdataDir, "scheduled_job.yaml")
+	pathToDAG := filepath.Join(testdataDir, "scheduled_job.yaml")
 	loader := &dag.Loader{}
 	dag, err := loader.LoadHeadOnly(pathToDAG)
 	require.NoError(t, err)
@@ -59,12 +59,12 @@ func TestAgentForStop(t *testing.T) {
 		&admin.Config{
 			DAGs:    testdataDir,
 			Command: testBin,
-			LogDir:  path.Join(tmpDir, "log"),
+			LogDir:  filepath.Join(tmpDir, "log"),
 		})
 	utils.FixedTime = now
 
 	// read the test DAG
-	file := path.Join(testdataDir, "start_stop.yaml")
+	file := filepath.Join(testdataDir, "start_stop.yaml")
 	dr := controller.NewDAGStatusReader()
 	dag, _ := dr.ReadStatus(file, false)
 	c := controller.NewDAGController(dag.DAG)

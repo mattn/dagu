@@ -3,7 +3,7 @@ package database
 import (
 	"bufio"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 	"sync"
 
@@ -22,7 +22,7 @@ type Writer struct {
 
 // Open opens the writer.
 func (w *Writer) Open() (err error) {
-	os.MkdirAll(path.Dir(w.Target), 0755)
+	os.MkdirAll(filepath.Dir(w.Target), 0755)
 	w.file, err = utils.OpenOrCreateFile(w.Target)
 	if err == nil {
 		w.writer = bufio.NewWriter(w.file)

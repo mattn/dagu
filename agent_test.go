@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"path"
+	"path/filepath"
 	"syscall"
 	"testing"
 	"time"
@@ -18,7 +18,7 @@ import (
 	"github.com/yohamta/dagu/internal/utils"
 )
 
-var testdataDir = path.Join(utils.MustGetwd(), "testdata")
+var testdataDir = filepath.Join(utils.MustGetwd(), "testdata")
 
 func TestMain(m *testing.M) {
 	testHomeDir := utils.MustTempDir("agent_test")
@@ -283,7 +283,7 @@ func testDAG(t *testing.T, d *dag.DAG) (*models.Status, error) {
 }
 
 func testLoadDAG(t *testing.T, name string) *dag.DAG {
-	file := path.Join(testdataDir, name)
+	file := filepath.Join(testdataDir, name)
 	cl := &dag.Loader{}
 	d, err := cl.Load(file, "")
 	require.NoError(t, err)

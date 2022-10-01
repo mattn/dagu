@@ -3,7 +3,6 @@ package handlers
 import (
 	"fmt"
 	"net/http"
-	"path"
 	"path/filepath"
 	"strings"
 
@@ -66,7 +65,7 @@ func HandlePostList(hc *DAGListHandlerConfig) http.HandlerFunc {
 
 		switch action {
 		case "new":
-			filename := nameWithExt(path.Join(hc.DAGsDir, value))
+			filename := nameWithExt(filepath.Join(hc.DAGsDir, value))
 			err := controller.CreateDAG(filename)
 			if err != nil {
 				encodeError(w, err)

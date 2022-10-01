@@ -8,7 +8,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"path"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -177,8 +176,8 @@ func (db *Database) Compact(configPath, original string) error {
 	}
 
 	new := fmt.Sprintf("%s_c.dat",
-		strings.TrimSuffix(filepath.Base(original), path.Ext(original)))
-	f := path.Join(filepath.Dir(original), new)
+		strings.TrimSuffix(filepath.Base(original), filepath.Ext(original)))
+	f := filepath.Join(filepath.Dir(original), new)
 	w := &Writer{Target: f}
 	if err := w.Open(); err != nil {
 		return err
@@ -216,12 +215,12 @@ func (db *Database) MoveData(oldPath, newPath string) error {
 	if err != nil {
 		return err
 	}
-	oldPattern := path.Base(db.pattern(oldPath))
-	newPattern := path.Base(db.pattern(newPath))
+	oldPattern := filepath.Base(db.pattern(oldPath))
+	newPattern := filepath.Base(db.pattern(newPath))
 	for _, m := range matches {
-		base := path.Base(m)
+		base := filepath.Base(m)
 		f := strings.Replace(base, oldPattern, newPattern, 1)
-		os.Rename(m, path.Join(newDir, f))
+		os.Rename(m, filepath.Join(newDir, f))
 	}
 	if files, _ := os.ReadDir(oldDir); len(files) == 0 {
 		os.Remove(oldDir)
@@ -240,7 +239,7 @@ func (db *Database) newFile(configPath string, t time.Time, requestId string) (s
 	if configPath == "" {
 		return "", fmt.Errorf("configPath is empty")
 	}
-	fileName := fmt.Sprintf("%s.%s.%s.dat", db.pattern(configPath), t.Format("20060102.15:04:05.000"), utils.TruncString(requestId, 8))
+	fileName := fmt.Sprintf("%s.%s.%s.dat", db.pattern(configPath), t.Format("20060102.15-04-05.000"), utils.TruncString(requestId, 8))
 	return fileName, nil
 }
 
@@ -329,6 +328,6 @@ func readLineFrom(f *os.File, offset int64) ([]byte, error) {
 func prefix(configPath string) string {
 	return strings.TrimSuffix(
 		filepath.Base(configPath),
-		path.Ext(configPath),
+		filepath.Ext(configPath),
 	)
 }

@@ -2,7 +2,7 @@ package settings
 
 import (
 	"os"
-	"path"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -29,11 +29,11 @@ func TestReadSetting(t *testing.T) {
 	}{
 		{
 			Name: SETTING__DATA_DIR,
-			Want: path.Join(testHomeDir, ".dagu/data"),
+			Want: filepath.Join(testHomeDir, ".dagu/data"),
 		},
 		{
 			Name: SETTING__LOGS_DIR,
-			Want: path.Join(testHomeDir, ".dagu/logs"),
+			Want: filepath.Join(testHomeDir, ".dagu/logs"),
 		},
 	} {
 		val, err := Get(test.Name)

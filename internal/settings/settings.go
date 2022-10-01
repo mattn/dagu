@@ -3,7 +3,7 @@ package settings
 import (
 	"fmt"
 	"os"
-	"path"
+	"path/filepath"
 
 	"github.com/yohamta/dagu/internal/utils"
 )
@@ -65,17 +65,17 @@ func init() {
 
 func load() {
 	cache = map[string]string{}
-	cacheEnv(SETTING__HOME, path.Join(utils.MustGetUserHomeDir(), "/.dagu/"))
+	cacheEnv(SETTING__HOME, filepath.Join(utils.MustGetUserHomeDir(), "/.dagu/"))
 
 	dh := MustGet(SETTING__HOME)
 
-	cache[SETTING__ADMIN_CONFIG] = path.Join(dh, "admin.yaml")
-	cache[SETTING__BASE_CONFIG] = path.Join(dh, "config.yaml")
-	cache[SETTING__DATA_DIR] = path.Join(dh, "/data")
-	cache[SETTING__LOGS_DIR] = path.Join(dh, "/logs")
-	cache[SETTING__SUSPEND_FLAGS_DIR] = path.Join(dh, "/suspend")
-	cache[SETTING__ADMIN_LOGS_DIR] = path.Join(dh, "/logs/admin")
-	cache[SETTING__ADMIN_DAGS_DIR] = path.Join(dh, "/dags")
+	cache[SETTING__ADMIN_CONFIG] = filepath.Join(dh, "admin.yaml")
+	cache[SETTING__BASE_CONFIG] = filepath.Join(dh, "config.yaml")
+	cache[SETTING__DATA_DIR] = filepath.Join(dh, "/data")
+	cache[SETTING__LOGS_DIR] = filepath.Join(dh, "/logs")
+	cache[SETTING__SUSPEND_FLAGS_DIR] = filepath.Join(dh, "/suspend")
+	cache[SETTING__ADMIN_LOGS_DIR] = filepath.Join(dh, "/logs/admin")
+	cache[SETTING__ADMIN_DAGS_DIR] = filepath.Join(dh, "/dags")
 	cache[SETTING__ADMIN_PORT] = "8080"
 	cache[SETTING__ADMIN_NAVBAR_COLOR] = ""
 	cache[SETTING__ADMIN_NAVBAR_TITLE] = "Dagu"

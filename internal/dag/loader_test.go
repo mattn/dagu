@@ -1,7 +1,7 @@
 package dag
 
 import (
-	"path"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
@@ -12,13 +12,13 @@ import (
 
 func TestLoadingFile(t *testing.T) {
 	l := &Loader{}
-	f := path.Join(testdataDir, "loader_test.yaml")
+	f := filepath.Join(testdataDir, "loader_test.yaml")
 	d, err := l.Load(f, "")
 	require.NoError(t, err)
 	require.Equal(t, f, d.Location)
 
 	// without .yaml
-	d, err = l.Load(path.Join(testdataDir, "loader_test"), "")
+	d, err = l.Load(filepath.Join(testdataDir, "loader_test"), "")
 	require.NoError(t, err)
 	require.Equal(t, f, d.Location)
 }
@@ -30,15 +30,15 @@ func TestLoaingErrors(t *testing.T) {
 		expectedError string
 	}{
 		{
-			file:          path.Join(testdataDir, "not_existing_file.yaml"),
+			file:          filepath.Join(testdataDir, "not_existing_file.yaml"),
 			expectedError: "no such file or directory",
 		},
 		{
-			file:          path.Join(testdataDir, "err_decode.yaml"),
+			file:          filepath.Join(testdataDir, "err_decode.yaml"),
 			expectedError: "has invalid keys: invalidkey",
 		},
 		{
-			file:          path.Join(testdataDir, "err_parse.yaml"),
+			file:          filepath.Join(testdataDir, "err_parse.yaml"),
 			expectedError: "cannot unmarshal",
 		},
 	}
@@ -57,7 +57,7 @@ func TestLoaingErrors(t *testing.T) {
 func TestLoadingHeadlineOnly(t *testing.T) {
 	l := &Loader{}
 
-	d, err := l.LoadHeadOnly(path.Join(testdataDir, "default.yaml"))
+	d, err := l.LoadHeadOnly(filepath.Join(testdataDir, "default.yaml"))
 	require.NoError(t, err)
 
 	require.Equal(t, d.Name, "default")
@@ -67,7 +67,7 @@ func TestLoadingHeadlineOnly(t *testing.T) {
 func TestCloning(t *testing.T) {
 	l := &Loader{}
 
-	d, err := l.Load(path.Join(testdataDir, "default.yaml"), "")
+	d, err := l.Load(filepath.Join(testdataDir, "default.yaml"), "")
 	require.NoError(t, err)
 
 	cloned := d.Clone()
@@ -86,7 +86,7 @@ func TestLoadingBaseConfig(t *testing.T) {
 
 func TestLoadingDeafultValues(t *testing.T) {
 	l := &Loader{}
-	d, err := l.Load(path.Join(testdataDir, "default.yaml"), "")
+	d, err := l.Load(filepath.Join(testdataDir, "default.yaml"), "")
 	require.NoError(t, err)
 
 	require.Equal(t, time.Second*60, d.MaxCleanUpTime)

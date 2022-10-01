@@ -4,7 +4,7 @@ import (
 	"crypto/md5"
 	"fmt"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -88,11 +88,11 @@ func (c *DAG) HasTag(tag string) bool {
 
 func (c *DAG) SockAddr() string {
 	s := strings.ReplaceAll(c.Location, " ", "_")
-	name := strings.Replace(path.Base(s), path.Ext(path.Base(s)), "", 1)
+	name := strings.Replace(filepath.Base(s), filepath.Ext(filepath.Base(s)), "", 1)
 	h := md5.New()
 	h.Write([]byte(s))
 	bs := h.Sum(nil)
-	return path.Join("/tmp", fmt.Sprintf("@dagu-%s-%x.sock", name, bs))
+	return filepath.Join("/tmp", fmt.Sprintf("@dagu-%s-%x.sock", name, bs))
 }
 
 func (c *DAG) Clone() *DAG {
@@ -115,7 +115,7 @@ func (c *DAG) String() string {
 
 func (c *DAG) setup() {
 	if c.LogDir == "" {
-		c.LogDir = path.Join(settings.MustGet(settings.SETTING__LOGS_DIR), "dags")
+		c.LogDir = filepath.Join(settings.MustGet(settings.SETTING__LOGS_DIR), "dags")
 	}
 	if c.HistRetentionDays == 0 {
 		c.HistRetentionDays = 30
@@ -123,7 +123,7 @@ func (c *DAG) setup() {
 	if c.MaxCleanUpTime == 0 {
 		c.MaxCleanUpTime = time.Second * 60
 	}
-	dir := path.Dir(c.Location)
+	dir := filepath.Dir(c.Location)
 	for _, step := range c.Steps {
 		c.setupStep(step, dir)
 	}
@@ -143,6 +143,6 @@ func (c *DAG) setup() {
 
 func (c *DAG) setupStep(step *Step, defaultDir string) {
 	if step.Dir == "" {
-		step.Dir = path.Dir(c.Location)
+		step.Dir = filepath.Dir(c.Location)
 	}
 }

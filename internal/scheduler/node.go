@@ -223,7 +223,7 @@ func (n *Node) setup(logDir string, requestId string) error {
 	n.StartedAt = time.Now()
 	n.Log = filepath.Join(logDir, fmt.Sprintf("%s.%s.%s.log",
 		utils.ValidFilename(n.Name, "_"),
-		n.StartedAt.Format("20060102.15:04:05.000"),
+		n.StartedAt.Format("20060102.15-04-05.000"),
 		utils.TruncString(requestId, 8),
 	))
 	setup := []func() error{

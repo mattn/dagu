@@ -1,7 +1,7 @@
 package runner
 
 import (
-	"path"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -17,7 +17,7 @@ func TestReadEntries(t *testing.T) {
 	now := time.Date(2020, 1, 1, 1, 0, 0, 0, time.UTC).Add(-time.Second)
 
 	r := newEntryReader(&admin.Config{
-		DAGs: path.Join(testdataDir, "invalid_directory"),
+		DAGs: filepath.Join(testdataDir, "invalid_directory"),
 	})
 	entries, err := r.Read(now)
 	require.NoError(t, err)

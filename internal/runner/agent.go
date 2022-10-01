@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"path"
+	"path/filepath"
 	"syscall"
 
 	"github.com/yohamta/dagu/internal/admin"
@@ -76,8 +76,8 @@ func (a *Agent) registerRunnerShutdown(runner *Runner) {
 }
 
 func (a *Agent) setupLogFile() (err error) {
-	filename := path.Join(a.LogDir, "scheduler.log")
-	dir := path.Dir(filename)
+	filename := filepath.Join(a.LogDir, "scheduler.log")
+	dir := filepath.Dir(filename)
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return err
 	}

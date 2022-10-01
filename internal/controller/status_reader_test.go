@@ -1,7 +1,6 @@
 package controller_test
 
 import (
-	"path"
 	"path/filepath"
 	"testing"
 
@@ -29,7 +28,7 @@ func TestReadAll(t *testing.T) {
 	require.NoError(t, err)
 	require.Greater(t, len(dags), 0)
 
-	pattern := path.Join(testdataDir, "*.yaml")
+	pattern := filepath.Join(testdataDir, "*.yaml")
 	matches, err := filepath.Glob(pattern)
 	require.NoError(t, err)
 	if len(matches) != len(dags) {

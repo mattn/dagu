@@ -2,7 +2,7 @@ package scheduler
 
 import (
 	"os"
-	"path"
+	"path/filepath"
 	"syscall"
 	"testing"
 	"time"
@@ -165,7 +165,7 @@ func TestSchedulerCancel(t *testing.T) {
 }
 
 func TestSchedulerRetryFail(t *testing.T) {
-	cmd := path.Join(utils.MustGetwd(), "testdata/testfile.sh")
+	cmd := filepath.Join(utils.MustGetwd(), "testdata/testfile.sh")
 	g, sc, err := testSchedule(t,
 		&dag.Step{
 			Name:        "1",
@@ -202,9 +202,9 @@ func TestSchedulerRetryFail(t *testing.T) {
 }
 
 func TestSchedulerRetrySuccess(t *testing.T) {
-	cmd := path.Join(utils.MustGetwd(), "testdata/testfile.sh")
+	cmd := filepath.Join(utils.MustGetwd(), "testdata/testfile.sh")
 	tmpDir, err := os.MkdirTemp("", "scheduler_test")
-	tmpFile := path.Join(tmpDir, "flag")
+	tmpFile := filepath.Join(tmpDir, "flag")
 
 	require.NoError(t, err)
 	defer os.Remove(tmpDir)

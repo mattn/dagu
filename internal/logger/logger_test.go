@@ -5,7 +5,7 @@ import (
 	"io"
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -25,7 +25,7 @@ func TestTeeLogger(t *testing.T) {
 	}()
 
 	tmpDir := utils.MustTempDir("test-tee-logger")
-	tmpFile := path.Join(tmpDir, "test.log")
+	tmpFile := filepath.Join(tmpDir, "test.log")
 	f, err := os.Create(tmpFile)
 	require.NoError(t, err)
 	l := &TeeLogger{Writer: f}

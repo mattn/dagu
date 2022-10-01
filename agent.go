@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path"
 	"path/filepath"
 	"regexp"
 	"syscall"
@@ -150,7 +149,7 @@ func (a *Agent) signal(sig os.Signal, allowOverride bool) {
 }
 
 func (a *Agent) init() {
-	logDir := path.Join(a.DAG.LogDir, utils.ValidFilename(a.DAG.Name, "_"))
+	logDir := filepath.Join(a.DAG.LogDir, utils.ValidFilename(a.DAG.Name, "_"))
 	a.scheduler = &scheduler.Scheduler{
 		Config: &scheduler.Config{
 			LogDir:        logDir,
@@ -178,7 +177,7 @@ func (a *Agent) init() {
 		logDir,
 		fmt.Sprintf("agent_%s.%s.%s.log",
 			utils.ValidFilename(a.DAG.Name, "_"),
-			time.Now().Format("20060102.15:04:05.000"),
+			time.Now().Format("20060102.15-04-05.000"),
 			utils.TruncString(a.requestId, 8),
 		))
 }
@@ -193,7 +192,7 @@ func (a *Agent) setupGraph() (err error) {
 }
 
 func (a *Agent) setupLogFile() (err error) {
-	dir := path.Dir(a.logFilename)
+	dir := filepath.Dir(a.logFilename)
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return err
 	}

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
-	"path"
+	"path/filepath"
 	"sync"
 	"syscall"
 	"testing"
@@ -105,7 +105,7 @@ func TestStdout(t *testing.T) {
 
 	runTestNode(t, n)
 
-	f := path.Join(os.Getenv("HOME"), n.Step.Stdout)
+	f := filepath.Join(os.Getenv("HOME"), n.Step.Stdout)
 	dat, _ := os.ReadFile(f)
 	require.Equal(t, "done\n", string(dat))
 }
@@ -127,11 +127,11 @@ echo Stderr message >&2
 
 	runTestNode(t, n)
 
-	f := path.Join(os.Getenv("HOME"), n.Step.Stderr)
+	f := filepath.Join(os.Getenv("HOME"), n.Step.Stderr)
 	dat, _ := os.ReadFile(f)
 	require.Equal(t, "Stderr message\n", string(dat))
 
-	f = path.Join(os.Getenv("HOME"), n.Step.Stdout)
+	f = filepath.Join(os.Getenv("HOME"), n.Step.Stdout)
 	dat, _ = os.ReadFile(f)
 	require.Equal(t, "Stdout message\n", string(dat))
 }

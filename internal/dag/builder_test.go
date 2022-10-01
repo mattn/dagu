@@ -3,7 +3,7 @@ package dag
 import (
 	"fmt"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -352,13 +352,13 @@ func TestGeneratingSockAddr(t *testing.T) {
 func TestOverwriteGlobalConfig(t *testing.T) {
 	l := &Loader{BaseConfig: settings.MustGet(settings.SETTING__BASE_CONFIG)}
 
-	d, err := l.Load(path.Join(testdataDir, "overwrite.yaml"), "")
+	d, err := l.Load(filepath.Join(testdataDir, "overwrite.yaml"), "")
 	require.NoError(t, err)
 
 	require.Equal(t, &MailOn{Failure: false, Success: false}, d.MailOn)
 	require.Equal(t, d.HistRetentionDays, 7)
 
-	d, err = l.Load(path.Join(testdataDir, "no_overwrite.yaml"), "")
+	d, err = l.Load(filepath.Join(testdataDir, "no_overwrite.yaml"), "")
 	require.NoError(t, err)
 
 	require.Equal(t, &MailOn{Failure: true, Success: false}, d.MailOn)

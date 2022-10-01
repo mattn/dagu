@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 
@@ -41,8 +42,15 @@ func DefaultConfig() (*Config, error) {
 }
 
 func defaultConfig() *Config {
+	command, err := os.Executable()
+	if err != nil {
+		command = "dagu"
+		if runtime.GOOS == "windows" {
+			command += ".exe"
+		}
+	}
 	return &Config{
-		Command:     "dagu",
+		Command:     command,
 		DAGs:        settings.MustGet(settings.SETTING__ADMIN_DAGS_DIR),
 		LogDir:      settings.MustGet(settings.SETTING__ADMIN_LOGS_DIR),
 		Host:        "127.0.0.1",

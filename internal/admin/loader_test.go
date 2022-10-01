@@ -1,14 +1,14 @@
 package admin
 
 import (
-	"path"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 	"github.com/yohamta/dagu/internal/settings"
 )
 
-var testsConfig = path.Join(testdataDir, "admin.yaml")
+var testsConfig = filepath.Join(testdataDir, "admin.yaml")
 
 func TestDefaultConfig(t *testing.T) {
 	cfg, err := DefaultConfig()
@@ -33,9 +33,9 @@ func TestHomeAdminConfig(t *testing.T) {
 	testConfig(t, cfg, &testWant{
 		Host:    "localhost",
 		Port:    "8081",
-		DAGs:    path.Join(testdataDir, "/dagu/dags"),
-		Command: path.Join(testdataDir, "/dagu/bin/dagu"),
-		WorkDir: path.Join(testdataDir, "/dagu/dags"),
+		DAGs:    filepath.Join(testdataDir, "/dagu/dags"),
+		Command: filepath.Join(testdataDir, "/dagu/bin/dagu"),
+		WorkDir: filepath.Join(testdataDir, "/dagu/dags"),
 	})
 }
 
@@ -53,9 +53,9 @@ func TestLoadAdminConfig(t *testing.T) {
 	testConfig(t, cfg, &testWant{
 		Host:    "localhost",
 		Port:    "8082",
-		DAGs:    path.Join(testdataDir, "/dagu/dags"),
-		Command: path.Join(testdataDir, "/dagu/bin/dagu"),
-		WorkDir: path.Join(testdataDir, "/dagu/dags"),
+		DAGs:    filepath.Join(testdataDir, "/dagu/dags"),
+		Command: filepath.Join(testdataDir, "/dagu/bin/dagu"),
+		WorkDir: filepath.Join(testdataDir, "/dagu/dags"),
 	})
 }
 

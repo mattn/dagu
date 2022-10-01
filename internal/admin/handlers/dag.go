@@ -5,7 +5,6 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"path"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -285,7 +284,7 @@ func HandlePostDAG(hc *PostDAGHandlerConfig) http.HandlerFunc {
 			return
 
 		case "rename":
-			newfile := nameWithExt(path.Join(hc.DAGsDir, value))
+			newfile := nameWithExt(filepath.Join(hc.DAGsDir, value))
 			err := controller.MoveDAG(file, newfile)
 			if err != nil {
 				encodeError(w, err)
