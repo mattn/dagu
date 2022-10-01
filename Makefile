@@ -1,13 +1,19 @@
 VERSION=$(shell date +'%y%m%d%H%M%S')
 LDFLAGS=-X 'main.version=$(VERSION)'
 
+ifeq ($(OS),Windows_NT)
+BIN = ./bin/dagu.exe
+else
+BIN = ./bin/dagu
+endif
+
 .PHONY: build-dir
 build-dir:
 	mkdir -p ./bin
 
 .PHONY: build
 build: build-admin build-dir
-	go build -ldflags="$(LDFLAGS)" -o ./bin/dagu ./cmd/
+	go build -ldflags="$(LDFLAGS)" -o $(BIN) ./cmd/
 
 .PHONY: build-admin
 build-admin:
@@ -17,13 +23,13 @@ build-admin:
 
 .PHONY: server
 server: build-dir
-	go build -ldflags="$(LDFLAGS)" -o ./bin/dagu ./cmd/
-	./bin/dagu server
+	go build -ldflags="$(LDFLAGS)" -o $(BIN) ./cmd/
+	$(BIN) server
 
 .PHONY: scheduler
 scheduler: build-dir
-	go build -ldflags="$(LDFLAGS)" -o ./bin/dagu ./cmd/
-	./bin/dagu scheduler
+	go build -ldflags="$(LDFLAGS)" -o $(BIN) ./cmd/
+	$(BIN) scheduler
 
 .PHONY: test
 test: build

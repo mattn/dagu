@@ -8,7 +8,6 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
-	"syscall"
 	"time"
 
 	"github.com/yohamta/dagu/internal/dag"
@@ -132,7 +131,7 @@ func (dc *DAGController) Start(binPath string, workDir string, params string) er
 	}
 	args = append(args, dc.Location)
 	cmd := exec.Command(binPath, args...)
-	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true, Pgid: 0}
+	cmd.SysProcAttr = utils.SysProcAttrForSetpgid()
 	cmd.Dir = workDir
 	cmd.Env = os.Environ()
 	err := cmd.Start()
@@ -148,7 +147,7 @@ func (dc *DAGController) Retry(binPath string, workDir string, reqId string) (er
 		args = append(args, fmt.Sprintf("--req=%s", reqId))
 		args = append(args, dc.Location)
 		cmd := exec.Command(binPath, args...)
-		cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true, Pgid: 0}
+		cmd.SysProcAttr = utils.SysProcAttrForSetpgid()
 		cmd.Dir = workDir
 		cmd.Env = os.Environ()
 		defer cmd.Wait()
@@ -162,7 +161,7 @@ func (dc *DAGController) Retry(binPath string, workDir string, reqId string) (er
 func (dc *DAGController) Restart(bin string, workDir string) error {
 	args := []string{"restart", dc.Location}
 	cmd := exec.Command(bin, args...)
-	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true, Pgid: 0}
+	cmd.SysProcAttr = utils.SysProcAttrForSetpgid()
 	cmd.Dir = workDir
 	cmd.Env = os.Environ()
 	err := cmd.Start()

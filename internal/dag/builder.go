@@ -11,7 +11,6 @@ import (
 	"github.com/robfig/cron/v3"
 	"github.com/yohamta/dagu/internal/constants"
 	"github.com/yohamta/dagu/internal/utils"
-	"golang.org/x/sys/unix"
 )
 
 var EXTENSIONS = []string{".yaml", ".yml"}
@@ -425,9 +424,9 @@ func (b *builder) buildStep(variables []string, def *stepDef) (*Step, error) {
 	}
 	if def.SignalOnStop != nil {
 		sigDef := *def.SignalOnStop
-		sig := unix.SignalNum(sigDef)
-		if sig == 0 {
-			return nil, fmt.Errorf("invalid signal: %s", sigDef)
+		_, err := utils.SignalNum(sigDef)
+		if err != nil {
+			return nil, err
 		}
 		step.SignalOnStop = sigDef
 	}

@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	"github.com/yohamta/dagu/internal/dag"
+	"github.com/yohamta/dagu/internal/utils"
 )
 
 type CommandExecutor struct {
@@ -30,7 +31,7 @@ func (e *CommandExecutor) Kill(sig os.Signal) error {
 	if e.cmd == nil || e.cmd.Process == nil {
 		return nil
 	}
-	return syscall.Kill(-e.cmd.Process.Pid, sig.(syscall.Signal))
+	return utils.Kill(-e.cmd.Process.Pid, sig.(syscall.Signal))
 }
 
 func CreateCommandExecutor(ctx context.Context, step *dag.Step) (Executor, error) {
@@ -41,10 +42,7 @@ func CreateCommandExecutor(ctx context.Context, step *dag.Step) (Executor, error
 		cmd.Env = append(cmd.Env, value.(string))
 		return true
 	})
-	cmd.SysProcAttr = &syscall.SysProcAttr{
-		Setpgid: true,
-		Pgid:    0,
-	}
+	cmd.SysProcAttr = utils.SysProcAttrForSetpgid()
 
 	return &CommandExecutor{
 		cmd: cmd,
